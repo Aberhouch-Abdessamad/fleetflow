@@ -1,0 +1,276 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/plus-jakarta-sans';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   FleetFlow design tokens
+   Semantic variables switch between light and dark; Tailwind utilities map to
+   them via @theme inline (bg-surface, text-muted, border-border, …).
+   ========================================================================== */
+
+:root {
+  --bg: #f4f6fb;
+  --bg-grad: radial-gradient(1200px 600px at 100% -10%, #e6efff 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, #e3f7f4 0%, transparent 55%);
+  --surface: #ffffff;
+  --surface-2: #f8fafd;
+  --surface-3: #eef2f8;
+  --border: #e3e8f1;
+  --border-strong: #cfd7e6;
+  --fg: #0d1631;
+  --fg-soft: #33405f;
+  --muted: #66728f;
+  --subtle: #97a1b8;
+
+  --primary: #2459e6;
+  --primary-hover: #1d4ccc;
+  --primary-soft: #e8efff;
+  --primary-fg: #ffffff;
+  --accent: #0fa89a;
+  --accent-soft: #e0f6f3;
+
+  --success: #12965f;
+  --success-soft: #e3f6ed;
+  --warning: #c27a06;
+  --warning-soft: #fdf3dd;
+  --danger: #d93a3a;
+  --danger-soft: #fde9e9;
+  --info: #2d7ff0;
+  --info-soft: #e6f0fe;
+
+  --sidebar: #0b1530;
+  --sidebar-2: #101d40;
+  --sidebar-fg: #c6cfe4;
+  --sidebar-muted: #7584a8;
+  --sidebar-active: rgba(99, 139, 255, 0.14);
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+
+  --ring: rgba(36, 89, 230, 0.35);
+  --shadow-color: 220 40% 20%;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #070c1c;
+  --bg-grad: radial-gradient(1100px 600px at 100% -10%, rgba(37, 89, 230, 0.12) 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(15, 168, 154, 0.08) 0%, transparent 55%);
+  --surface: #0d1529;
+  --surface-2: #111b33;
+  --surface-3: #16223f;
+  --border: #1c2846;
+  --border-strong: #2a395f;
+  --fg: #e8edf8;
+  --fg-soft: #c3cce0;
+  --muted: #8a96b4;
+  --subtle: #5d6a8a;
+
+  --primary: #4d7dff;
+  --primary-hover: #6890ff;
+  --primary-soft: rgba(77, 125, 255, 0.14);
+  --primary-fg: #ffffff;
+  --accent: #2dd4bf;
+  --accent-soft: rgba(45, 212, 191, 0.12);
+
+  --success: #34d399;
+  --success-soft: rgba(52, 211, 153, 0.12);
+  --warning: #fbbf24;
+  --warning-soft: rgba(251, 191, 36, 0.12);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.12);
+  --info: #60a5fa;
+  --info-soft: rgba(96, 165, 250, 0.12);
+
+  --sidebar: #060b19;
+  --sidebar-2: #0a1226;
+  --sidebar-border: rgba(255, 255, 255, 0.05);
+
+  --ring: rgba(77, 125, 255, 0.45);
+  --shadow-color: 225 60% 2%;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-fg: var(--primary-fg);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-2: var(--sidebar-2);
+  --color-sidebar-fg: var(--sidebar-fg);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-sidebar-active: var(--sidebar-active);
+  --color-sidebar-border: var(--sidebar-border);
+
+  --color-navy-950: #060b19;
+  --color-navy-900: #0b1530;
+  --color-navy-800: #12204a;
+  --color-navy-700: #1b2d63;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+
+  --shadow-xs: 0 1px 2px hsl(var(--shadow-color) / 0.06);
+  --shadow-card: 0 1px 2px hsl(var(--shadow-color) / 0.05), 0 4px 16px -6px hsl(var(--shadow-color) / 0.08);
+  --shadow-pop: 0 10px 38px -10px hsl(var(--shadow-color) / 0.28), 0 10px 20px -15px hsl(var(--shadow-color) / 0.2);
+  --shadow-glow: 0 0 0 1px rgba(36, 89, 230, 0.12), 0 8px 30px -8px rgba(36, 89, 230, 0.45);
+
+  --animate-fade-in: fade-in 0.25s ease-out both;
+  --animate-slide-up: slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-scale-in: scale-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-dash: dash 18s linear infinite;
+  --animate-pulse-ring: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to { background-position: 400px 0; }
+}
+@keyframes dash {
+  to { stroke-dashoffset: -1000; }
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 currentColor; }
+  70% { box-shadow: 0 0 0 6px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ========================================================================== */
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    background-image: var(--bg-grad);
+    background-attachment: fixed;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-fg;
+    font-weight: 700;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--primary) 22%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* Tidy scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  input[type='number']::-webkit-inner-spin-button { opacity: 0.4; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Card surface used by <Card/> and ad-hoc panels */
+  .ff-card {
+    @apply rounded-xl border border-border bg-surface shadow-card;
+  }
+
+  /* Inputs share one look: <Input/>, <Select/>, <Textarea/> */
+  .ff-input {
+    @apply h-10 w-full rounded-lg border border-border-strong/80 bg-surface px-3 text-[0.9rem] text-fg shadow-xs
+      transition-[border-color,box-shadow,background-color] duration-150 outline-none
+      placeholder:text-subtle hover:border-border-strong
+      focus:border-primary focus:ring-4 focus:ring-[var(--ring)]
+      disabled:cursor-not-allowed disabled:bg-surface-2 disabled:opacity-70;
+  }
+  .ff-input[aria-invalid='true'] {
+    @apply border-danger focus:ring-danger/20;
+  }
+
+  .ff-skeleton {
+    background: linear-gradient(90deg, var(--surface-3) 0px, var(--surface-2) 120px, var(--surface-3) 240px);
+    background-size: 800px 100%;
+    @apply animate-shimmer rounded-md;
+  }
+
+  /* Subtle dotted grid used on hero / empty panels */
+  .ff-grid-bg {
+    background-image: radial-gradient(color-mix(in srgb, var(--fg) 9%, transparent) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  .ff-kbd {
+    @apply inline-flex h-5 min-w-5 items-center justify-center rounded border border-border bg-surface-2 px-1 font-sans text-[10px] font-semibold text-muted;
+  }
+}
