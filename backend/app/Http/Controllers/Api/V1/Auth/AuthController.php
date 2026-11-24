@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Auth\LoginRequest;
 use App\Http\Requests\Api\V1\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Services\Auth\AccountService;
 use App\Services\Auth\AuthService;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -19,6 +20,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         $user = $this->auth->register($request->validated());
+        app(AccountService::class)->sendVerification($user);
 
         // Start the session for the SPA (stateful) — token clients log in separately.
         if ($request->hasSession()) {

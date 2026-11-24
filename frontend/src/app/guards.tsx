@@ -9,8 +9,8 @@ export function FullScreenLoader() {
   return (
     <div className="grid min-h-dvh place-items-center">
       <div className="flex flex-col items-center gap-4 animate-fade-in">
-        <LogoMark className="size-11" />
-        <Spinner className="text-primary" />
+        <LogoMark className="size-8" />
+        <Spinner className="text-muted" />
       </div>
     </div>
   )
@@ -61,4 +61,20 @@ export function RequirePermission({ anyOf, children }: { anyOf: string[]; childr
     return <EmptyState icon={<ShieldAlert />} title="No access" description="Your role in this company does not include this area." />
   }
   return <>{children}</>
+}
+
+export function RequireSuperAdmin() {
+  const user = useAuth((s) => s.user)
+  if (!user?.is_super_admin) return <Navigate to="/app" replace />
+  return <Outlet />
+}
+
+/** Sends each user to their natural home: admin console, driver app or back office. */
+export function HomeRedirect() {
+  const { status, user } = useAuth()
+  if (status === 'idle' || status === 'loading') return <FullScreenLoader />
+  if (status === 'guest') return <Navigate to="/login" replace />
+  if (!user?.current_company) return <Navigate to={user?.is_super_admin ? '/admin' : '/onboarding'} replace />
+  if (user.roles.length === 1 && user.roles[0] === 'driver') return <Navigate to="/driver" replace />
+  return <Navigate to="/app" replace />
 }

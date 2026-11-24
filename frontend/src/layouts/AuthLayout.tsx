@@ -1,80 +1,63 @@
-import { CheckCircle2, MapPin } from 'lucide-react'
+import { MapPinned, ShieldCheck, Workflow } from 'lucide-react'
 import { Link, Outlet } from 'react-router-dom'
 import { Logo } from '@/components/brand/Logo'
 import { ThemeToggle } from '@/components/ThemeToggle'
 
 const POINTS = [
-  'Dispatch, track and prove every delivery in one place',
-  'Isolated, secure workspace for every company',
-  'Fleet, drivers, maintenance and costs — connected',
+  { icon: Workflow, title: 'Dispatch with confidence', text: 'Eligibility checks for licence, capacity and conflicts before anything is assigned.' },
+  { icon: MapPinned, title: 'Track what is really moving', text: 'Positions come from drivers on shift — stale data is labelled, never guessed.' },
+  { icon: ShieldCheck, title: 'Isolated by design', text: 'Every company gets its own workspace, roles and audit trail.' },
 ]
 
-/** Decorative route illustration (pure SVG — not data). */
+/** Decorative line-art route (pure SVG — not data). */
 function RouteArt() {
+  const d = 'M40 300 C 120 300, 130 200, 220 205 S 330 290, 390 215 S 470 110, 540 120'
   return (
-    <svg viewBox="0 0 520 360" className="absolute inset-x-0 bottom-0 w-full opacity-90" aria-hidden="true">
-      <defs>
-        <linearGradient id="route" x1="0" x2="1">
-          <stop offset="0" stopColor="#5b8cff" />
-          <stop offset="1" stopColor="#2dd4bf" />
-        </linearGradient>
-        <radialGradient id="glow">
-          <stop offset="0" stopColor="#2dd4bf" stopOpacity="0.5" />
-          <stop offset="1" stopColor="#2dd4bf" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <path d="M-20 300 C 80 300, 90 190, 190 200 S 320 300, 380 210 S 470 90, 560 110" fill="none" stroke="white" strokeOpacity="0.06" strokeWidth="22" strokeLinecap="round" />
-      <path d="M-20 300 C 80 300, 90 190, 190 200 S 320 300, 380 210 S 470 90, 560 110" fill="none" stroke="url(#route)" strokeWidth="2.5" strokeDasharray="2 10" strokeLinecap="round" className="animate-dash" />
-      {[[190, 200], [380, 210]].map(([x, y]) => (
-        <g key={x}>
-          <circle cx={x} cy={y} r="26" fill="url(#glow)" />
-          <circle cx={x} cy={y} r="6" fill="#0b1530" stroke="#2dd4bf" strokeWidth="2.5" />
-        </g>
+    <svg viewBox="0 0 580 360" className="w-full" aria-hidden="true">
+      <path d={d} fill="none" stroke="var(--border-strong)" strokeWidth="14" strokeLinecap="round" opacity="0.5" />
+      <path d={d} fill="none" stroke="var(--fg)" strokeWidth="1.5" strokeDasharray="1 7" strokeLinecap="round" className="animate-dash" />
+      {[[40, 300], [220, 205], [390, 215]].map(([x, y]) => (
+        <circle key={x} cx={x} cy={y} r="5" fill="var(--bg)" stroke="var(--fg)" strokeWidth="1.5" />
       ))}
+      <circle cx="540" cy="120" r="14" fill="var(--primary)" opacity="0.15" />
+      <circle cx="540" cy="120" r="6" fill="var(--primary)" />
     </svg>
   )
 }
 
 export function AuthLayout() {
   return (
-    <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-      <aside className="relative hidden overflow-hidden bg-navy-900 p-10 text-white lg:flex lg:flex-col xl:p-14">
-        <div className="pointer-events-none absolute -left-40 -top-40 size-[520px] rounded-full bg-[#2459e6]/30 blur-[120px]" />
-        <div className="pointer-events-none absolute -bottom-32 right-0 size-[420px] rounded-full bg-[#0fa89a]/20 blur-[110px]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
-        <RouteArt />
+    <div className="grid min-h-dvh bg-bg lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+      <main className="relative flex flex-col px-5 py-5 sm:px-10">
+        <div className="flex items-center justify-between">
+          <Link to="/"><Logo /></Link>
+          <ThemeToggle />
+        </div>
+        <div className="mx-auto flex w-full max-w-[380px] flex-1 flex-col justify-center py-10 animate-slide-up">
+          <Outlet />
+        </div>
+        <p className="text-xs text-subtle">© {new Date().getFullYear()} FleetFlow</p>
+      </main>
 
-        <Link to="/" className="relative z-10"><Logo light /></Link>
-
-        <div className="relative z-10 mt-auto mb-40 max-w-lg animate-slide-up">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur">
-            <MapPin className="size-3.5 text-[#2dd4bf]" /> Fleet & delivery operations platform
-          </span>
-          <h2 className="mt-5 font-display text-[2.5rem] font-extrabold leading-[1.1] tracking-tight text-white">
-            <span className="block">Every vehicle.</span>
-            <span className="block">Every route.</span>
-            <span className="block bg-gradient-to-r from-[#7aa2ff] to-[#2dd4bf] bg-clip-text text-transparent">Every delivery.</span>
+      <aside className="relative m-2 hidden overflow-hidden rounded-xl border border-border bg-canvas lg:flex lg:flex-col">
+        <div className="ff-lines-bg pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_60%_40%,black_20%,transparent_75%)]" />
+        <div className="relative flex flex-1 flex-col justify-center px-12 xl:px-16">
+          <p className="font-mono text-xs text-muted">Fleet &amp; delivery operations</p>
+          <h2 className="mt-3 max-w-md text-[2rem] font-semibold leading-[1.15] tracking-[-0.03em]">
+            Every vehicle, route and delivery — <span className="text-muted">in one calm workspace.</span>
           </h2>
-          <ul className="mt-8 space-y-3.5">
-            {POINTS.map((p) => (
-              <li key={p} className="flex items-start gap-3 text-[0.95rem] text-white/75">
-                <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-[#2dd4bf]" /> {p}
+          <div className="-mx-4 mt-6 max-w-xl"><RouteArt /></div>
+          <ul className="mt-4 grid max-w-xl gap-5 xl:grid-cols-3">
+            {POINTS.map(({ icon: Icon, title, text }) => (
+              <li key={title}>
+                <span className="grid size-7 place-items-center rounded-md border border-border bg-surface shadow-xs"><Icon className="size-3.5" /></span>
+                <p className="mt-2.5 text-[0.8125rem] font-medium">{title}</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-muted">{text}</p>
               </li>
             ))}
           </ul>
         </div>
       </aside>
-
-      <main className="relative flex flex-col px-5 py-6 sm:px-10">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="lg:invisible"><Logo /></Link>
-          <ThemeToggle />
-        </div>
-        <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col justify-center py-10 animate-slide-up">
-          <Outlet />
-        </div>
-        <p className="text-center text-xs text-subtle">© {new Date().getFullYear()} FleetFlow</p>
-      </main>
     </div>
   )
 }

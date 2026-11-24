@@ -27,12 +27,12 @@ function Section({ icon, title, description, children }: { icon: ReactNode; titl
     <section className="grid gap-5 py-7 first:pt-0 last:pb-0 md:grid-cols-[220px_1fr] md:gap-10">
       <div>
         <div className="flex items-center gap-2.5">
-          <span className="grid size-8 place-items-center rounded-lg bg-primary-soft text-primary [&_svg]:size-4">{icon}</span>
-          <h2 className="text-[0.95rem] font-semibold">{title}</h2>
+          <span className="grid size-7 place-items-center rounded-md border border-border bg-surface-2 text-muted [&_svg]:size-3.5">{icon}</span>
+          <h2 className="text-[0.8125rem] font-semibold">{title}</h2>
         </div>
         <p className="mt-2 text-[0.8125rem] text-muted">{description}</p>
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">{children}</div>
+      <div className="grid gap-4 sm:grid-cols-2">{children}</div>
     </section>
   )
 }

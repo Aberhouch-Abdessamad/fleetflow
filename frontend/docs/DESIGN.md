@@ -1,32 +1,43 @@
-# FleetFlow design system
+# FleetFlow design system — "crisp minimal"
 
-**Direction:** a calm, premium logistics console. The navy sidebar anchors the layout, content sits on a light neutral canvas with soft colour washes, blue is the primary action colour and teal is the accent for "live/moving" signals.
+**Direction:** a calm, dense operations console in the spirit of Linear/Vercel. Neutral zinc greys, hairline borders instead of shadows, one indigo accent for primary actions and focus, emerald reserved for "live / moving". Light and dark are tuned separately, not inverted.
+
+## Shell
+
+- **Canvas + panel:** the app chrome (`bg-canvas`) holds a light sidebar; page content sits in a white inset panel (`bg-bg`, 1px border, 10px radius) that scrolls on its own. On mobile the panel fills the screen and the sidebar becomes a drawer.
+- **Sidebar:** workspace switcher, search button (opens ⌘K), permission-filtered navigation with quiet group labels, collapse toggle and the account menu at the bottom.
+- **Topbar (48px):** breadcrumb (group › page › details), company timezone chip with a live dot, theme toggle, notifications (dot indicator).
+- **Command palette (⌘K / Ctrl+K):** jump to any accessible page or run actions (new delivery, theme, sign out). Arrow keys + Enter.
 
 ## Tokens (`src/index.css`)
 
-Semantic CSS variables switch between light and dark, and Tailwind maps them through `@theme inline`:
+| Token | Light | Dark |
+| --- | --- | --- |
+| Canvas / panel | `#f6f6f7` / `#fff` | `#09090b` / `#0f0f11` |
+| Surface / 2 / 3 | `#fff` / `#fafafa` / `#f4f4f5` | `#121214` / `#161618` / `#1c1c1f` |
+| Border / strong | `#ebebed` / `#dcdce0` | `#232327` / `#303036` |
+| Text fg / soft / muted / subtle | `#09090b` / `#3f3f46` / `#71717a` / `#a1a1aa` | `#fafafa` / `#d4d4d8` / `#a1a1aa` / `#6b6b74` |
+| Primary (indigo) | `#4f46e5` | `#6366f1` |
+| Accent (live) | `#059669` | `#34d399` |
+| Status | success / warning / danger / info + `-soft` tints | |
 
-| Token | Light | Dark | Utility |
-| --- | --- | --- | --- |
-| Canvas | `#f4f6fb` + radial washes | `#070c1c` | `bg-bg` |
-| Surface / 2 / 3 | `#fff` / `#f8fafd` / `#eef2f8` | `#0d1529` / `#111b33` / `#16223f` | `bg-surface`, `bg-surface-2`, `bg-surface-3` |
-| Text / soft / muted / subtle | `#0d1631` … `#97a1b8` | `#e8edf8` … `#5d6a8a` | `text-fg`, `text-fg-soft`, `text-muted`, `text-subtle` |
-| Primary (blue) | `#2459e6` | `#4d7dff` | `bg-primary`, `text-primary`, `bg-primary-soft` |
-| Accent (teal) | `#0fa89a` | `#2dd4bf` | `text-accent`, `bg-accent-soft` |
-| Status | success / warning / danger / info + `-soft` | | `bg-success-soft text-success` … |
-| Sidebar | navy `#0b1530` | `#060b19` | `bg-sidebar`, `text-sidebar-fg` |
+- **Type:** Geist (UI and headings, weight 500–600, tight tracking on titles), Geist Mono for references, timestamps, axis ticks and kbd hints. Base size 14px; body copy 13px.
+- **Sizing:** controls 34px (`h-8.5`), small buttons 28px, table rows 44px, cards padded 16px.
+- **Radius:** 5 / 7 / 8 / 10 / 14px. **Elevation:** only popovers, dialogs and the command palette get shadows.
+- **Motion:** 150–280ms fades/slide-ups; `prefers-reduced-motion` respected.
 
-- **Type:** Plus Jakarta Sans (display / headings), Inter (UI, with `cv11 ss01 ss03`).
-- **Radius:** lg `0.75rem` for inputs and buttons, xl `1rem` for cards, 2xl for heroes and modals.
-- **Shadows:** `shadow-xs`, `shadow-card`, `shadow-pop`, and `shadow-glow` (primary hover).
-- **Motion:** `animate-fade-in`, `slide-up`, `scale-in`, `shimmer` (skeletons), `dash` (route art). `prefers-reduced-motion` is respected.
+## Charts
+
+Categorical palette `--chart-1…5` = indigo, teal, amber, pink, sky — validated with the dataviz validator for both surfaces (lightness band, chroma, CVD separation, contrast: all pass). Fixed order, never cycled; one y-axis; 2px lines; rounded bar ends; mono tick labels; legend for ≥ 2 series; hover tooltips.
 
 ## Components (`src/components/ui`)
 
-`Button` (primary, accent, secondary, outline, ghost, danger, link × sm, md, lg, icon; `loading`, `asChild`) · `Input` (leading and trailing slots) · `Select` · `Textarea` · `Field` (label, hint and error, wired to `aria-*`) · `Card`/`CardHeader`/`CardBody`/`CardFooter` · `Badge` + `StatusBadge` (one status→tone map for the whole app) · `Modal` + `ConfirmDialog` · `Dropdown*` · `Tooltip` · `Table`/`Th`/`Td`/`Tr` + `Pagination` · `Skeleton` · `EmptyState` · `Alert` · `Avatar` · `PageHeader` · `Spinner`.
+`Button` (primary, ink, outline, secondary, ghost, danger, accent, link × sm/md/lg/icon) · `Input`/`Select`/`Textarea` · `Field` · `Card` family · `Badge` + `StatusBadge` (single status→tone map) · `StatCard` and `StatStrip` (KPI row in one hairline grid) · `Tabs` (underline) · `Segmented` · `Switch` · `KeyValue` · `DataTable` + `Pagination` · `Modal`/`ConfirmDialog`/`FormModal` · `Dropdown*` · `Tooltip` · `Avatar` (tinted initials) · `EmptyState` · `Alert` · `Skeleton` · `PageHeader`.
 
 ## Rules
 
-- Never show invented numbers. If data doesn't exist yet, render an `EmptyState` that explains what will appear and when.
-- Use status colours only through `StatusBadge` so a status always looks the same everywhere.
-- Every form uses `Field` + Zod + `applyServerErrors()` so backend 422s land on the right input.
+- Never show invented numbers; empty data renders an `EmptyState` or "No data for this period".
+- Colour carries meaning only alongside a label (status dots + text, badges).
+- Text uses text tokens — never a series colour.
+- Late or approximate data says so ("stale · 12 min ago", "straight-line distance").
+- Every page has loading, empty and error states; render errors fall back to a recovery screen.

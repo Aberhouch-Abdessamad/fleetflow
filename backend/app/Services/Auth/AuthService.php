@@ -6,6 +6,7 @@ use App\Enums\UserStatus;
 use App\Exceptions\DomainException;
 use App\Models\User;
 use App\Services\ActivityLogger;
+use App\Support\Platform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,10 @@ class AuthService
 
     public function register(array $data): User
     {
+        if (! Platform::setting('registration_enabled')) {
+            throw new DomainException('New registrations are currently closed.', 'registration_closed', 403);
+        }
+
         return DB::transaction(function () use ($data) {
             $user = User::create([
                 'name' => $data['name'],

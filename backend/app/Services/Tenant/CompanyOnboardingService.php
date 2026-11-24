@@ -8,6 +8,8 @@ use App\Enums\MembershipStatus;
 use App\Models\Company;
 use App\Models\User;
 use App\Services\ActivityLogger;
+use App\Services\Subscription\SubscriptionService;
+use App\Support\Platform;
 use App\Support\Tenancy\TenantContext;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,6 +19,7 @@ class CompanyOnboardingService
     public function __construct(
         private readonly ActivityLogger $logger,
         private readonly TenantContext $tenant,
+        private readonly SubscriptionService $subscriptions,
     ) {}
 
     /** Creates the workspace and makes the creator its Company Admin — atomically. */
@@ -25,7 +28,7 @@ class CompanyOnboardingService
         return DB::transaction(function () use ($owner, $data) {
             $company = new Company($data);
             $company->slug = $this->uniqueSlug($data['name']);
-            $company->status = config('fleetflow.require_company_approval', false)
+            $company->status = Platform::setting('require_company_approval')
                 ? CompanyStatus::Pending
                 : CompanyStatus::Active;
             $company->owner()->associate($owner);
@@ -41,6 +44,7 @@ class CompanyOnboardingService
             });
 
             $owner->forceFill(['current_company_id' => $company->id])->save();
+            $this->subscriptions->startTrial($company);
 
             $this->logger->log('company.created', $company, ['name' => $company->name], $company->id);
 

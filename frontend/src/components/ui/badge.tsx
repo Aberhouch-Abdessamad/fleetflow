@@ -3,17 +3,17 @@ import type { HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
 export const badgeVariants = cva(
-  'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset [&_svg]:size-3',
+  'inline-flex h-5 items-center gap-1.5 whitespace-nowrap rounded-md px-1.5 text-[11px] font-medium ring-1 ring-inset [&_svg]:size-3',
   {
     variants: {
       tone: {
         neutral: 'bg-surface-3 text-fg-soft ring-border',
-        primary: 'bg-primary-soft text-primary ring-primary/20',
-        accent: 'bg-accent-soft text-accent ring-accent/20',
-        success: 'bg-success-soft text-success ring-success/20',
-        warning: 'bg-warning-soft text-warning ring-warning/25',
-        danger: 'bg-danger-soft text-danger ring-danger/20',
-        info: 'bg-info-soft text-info ring-info/20',
+        primary: 'bg-primary-soft text-primary ring-primary/15',
+        accent: 'bg-accent-soft text-accent ring-accent/15',
+        success: 'bg-success-soft text-success ring-success/15',
+        warning: 'bg-warning-soft text-warning ring-warning/20',
+        danger: 'bg-danger-soft text-danger ring-danger/15',
+        info: 'bg-info-soft text-info ring-info/15',
       },
     },
     defaultVariants: { tone: 'neutral' },

@@ -35,15 +35,15 @@ export default function RegisterPage() {
 
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Step 1 of 2</p>
-      <h1 className="mt-2 text-[1.75rem] font-extrabold">Create your account</h1>
-      <p className="mt-1.5 text-sm text-muted">Next, you'll set up your company workspace.</p>
+      <p className="font-mono text-xs text-muted">Step 1 of 2</p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-[-0.025em]">Create your account</h1>
+      <p className="mt-1 text-[0.8125rem] text-muted">Next, you'll set up your company workspace.</p>
 
-      <form onSubmit={onSubmit} className="mt-8 space-y-5" noValidate>
+      <form onSubmit={onSubmit} className="mt-7 space-y-4" noValidate>
         <Field label="Full name" error={errors.name?.message} required>
           <Input autoComplete="name" placeholder="Samira Haddad" leading={<UserIcon />} {...register('name')} />
         </Field>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Work email" error={errors.email?.message} required>
             <Input type="email" autoComplete="email" placeholder="you@company.com" leading={<Mail />} {...register('email')} />
           </Field>
@@ -64,7 +64,7 @@ export default function RegisterPage() {
       </form>
 
       <p className="mt-8 text-center text-sm text-muted">
-        Already have an account? <Link to="/login" className="font-semibold text-primary hover:underline">Sign in</Link>
+        Already have an account? <Link to="/login" className="font-medium text-fg underline decoration-border-strong underline-offset-4 hover:decoration-fg">Sign in</Link>
       </p>
     </div>
   )

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { authApi, type LoginInput, type RegisterInput } from '@/features/auth/api/authApi'
-import { onUnauthenticated, setActiveCompany } from '@/lib/http'
+import { onUnauthenticated, setActiveCompany, toApiError } from '@/lib/http'
 import type { User } from '@/types/api'
 
 type Status = 'idle' | 'loading' | 'authenticated' | 'guest'
@@ -28,15 +28,23 @@ export const useAuth = create<AuthState>((set, get) => ({
   },
 
   async refresh() {
-    try {
-      const user = await authApi.me()
-      setActiveCompany(user.current_company?.id ?? null)
-      set({ user, status: 'authenticated' })
-      return user
-    } catch {
-      setActiveCompany(null)
-      set({ user: null, status: 'guest' })
-      return null
+    for (let attempt = 0; ; attempt++) {
+      try {
+        const user = await authApi.me()
+        setActiveCompany(user.current_company?.id ?? null)
+        set({ user, status: 'authenticated' })
+        return user
+      } catch (e) {
+        // Only a 401 means "signed out"; transient errors (network, 429, 5xx) are retried.
+        if (toApiError(e).kind !== 'unauthenticated' && attempt < 3) {
+          await new Promise((r) => setTimeout(r, 800 * (attempt + 1)))
+          continue
+        }
+        if (toApiError(e).kind !== 'unauthenticated' && get().user) return get().user
+        setActiveCompany(null)
+        set({ user: null, status: 'guest' })
+        return null
+      }
     }
   },
 

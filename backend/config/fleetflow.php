@@ -67,9 +67,10 @@ return [
     ],
 
     'maps' => [
-        // mapbox | google | null (disabled — no fake routing/optimization)
-        'provider' => env('MAPS_PROVIDER'),
+        // mapbox | google | osm (default — key-less OSM/Nominatim + OSRM); none disables everything
+        'provider' => env('MAPS_PROVIDER', 'osm'),
         'mapbox_token' => env('MAPBOX_ACCESS_TOKEN'),
         'google_key' => env('GOOGLE_MAPS_API_KEY'),
+        'osrm_url' => env('OSRM_URL', 'https://router.project-osrm.org'),
     ],
 ];

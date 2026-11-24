@@ -19,8 +19,8 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-dvh">
-      <header className="border-b border-border bg-surface/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5">
+      <header className="border-b border-border bg-bg/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-5">
           <Logo />
           <div className="flex items-center gap-1">
             <ThemeToggle />
@@ -39,8 +39,8 @@ export default function OnboardingPage() {
             return (
               <li key={label} className="flex items-center gap-3">
                 <span className={cn('flex items-center gap-2 text-sm font-medium', active ? 'text-fg' : 'text-muted')}>
-                  <span className={cn('grid size-7 place-items-center rounded-full text-xs font-bold ring-1 ring-inset',
-                    done ? 'bg-success text-white ring-success' : active ? 'bg-primary text-white ring-primary shadow-glow' : 'bg-surface text-muted ring-border-strong')}>
+                  <span className={cn('grid size-7 place-items-center rounded-full text-xs font-semibold ring-1 ring-inset',
+                    done ? 'bg-success text-white ring-success' : active ? 'bg-primary text-white ring-primary shadow-pop' : 'bg-surface text-muted ring-border-strong')}>
                     {done ? <Check className="size-3.5" /> : i + 1}
                   </span>
                   {label}
@@ -52,7 +52,7 @@ export default function OnboardingPage() {
         </ol>
 
         <div className="mb-8 animate-slide-up">
-          <h1 className="text-3xl font-extrabold">{hasCompany ? 'Add another company' : `Welcome, ${user?.name.split(' ')[0]} — let's set up your workspace`}</h1>
+          <h1 className="text-3xl font-semibold">{hasCompany ? 'Add another company' : `Welcome, ${user?.name.split(' ')[0]} — let's set up your workspace`}</h1>
           <p className="mt-2 max-w-2xl text-muted">
             Each company gets its own isolated workspace for vehicles, drivers, deliveries and finances. You'll be its Company Admin and can invite your team afterwards.
           </p>

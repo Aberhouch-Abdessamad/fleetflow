@@ -5,25 +5,25 @@ import { cn } from '@/lib/utils'
 import { Spinner } from './spinner'
 
 export const buttonVariants = cva(
-  'relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold transition-all duration-150 outline-none focus-visible:ring-4 focus-visible:ring-[var(--ring)] disabled:pointer-events-none disabled:opacity-55 active:translate-y-px [&_svg]:size-4 [&_svg]:shrink-0',
+  'relative inline-flex select-none items-center justify-center gap-1.5 whitespace-nowrap rounded-lg font-medium transition-[background-color,border-color,color,box-shadow,opacity] duration-150 outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--ring)] disabled:pointer-events-none disabled:opacity-50 active:scale-[0.985] [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        primary:
-          'bg-primary text-primary-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_1px_2px_rgb(15_30_80/0.25)] hover:bg-primary-hover hover:shadow-glow',
-        accent: 'bg-accent text-white shadow-xs hover:brightness-105',
+        primary: 'bg-primary text-primary-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.14),0_1px_2px_rgb(0_0_0/0.12)] hover:bg-primary-hover',
+        ink: 'bg-fg text-bg shadow-xs hover:bg-fg/85',
+        accent: 'bg-accent text-white shadow-xs hover:brightness-105 dark:text-black',
         secondary: 'bg-surface-3 text-fg hover:bg-border',
-        outline: 'border border-border-strong bg-surface text-fg shadow-xs hover:bg-surface-2 hover:border-subtle/60',
-        ghost: 'text-fg-soft hover:bg-surface-3 hover:text-fg',
-        danger: 'bg-danger text-white shadow-xs hover:brightness-110',
+        outline: 'border border-border-strong bg-surface text-fg shadow-xs hover:bg-surface-3/70',
+        ghost: 'text-muted hover:bg-surface-3 hover:text-fg',
+        danger: 'bg-danger text-white shadow-xs hover:brightness-110 dark:text-black',
         link: 'h-auto px-0 text-primary underline-offset-4 hover:underline',
       },
       size: {
-        sm: 'h-8 px-3 text-[0.8125rem]',
-        md: 'h-10 px-4 text-sm',
-        lg: 'h-11 px-5 text-[0.95rem]',
-        icon: 'size-9',
-        'icon-sm': 'size-8',
+        sm: 'h-7 px-2.5 text-[0.78rem] [&_svg]:size-3.5',
+        md: 'h-8.5 px-3 text-[0.8125rem]',
+        lg: 'h-10 px-4 text-sm',
+        icon: 'size-8.5',
+        'icon-sm': 'size-7 [&_svg]:size-3.5',
       },
     },
     defaultVariants: { variant: 'primary', size: 'md' },

@@ -5,8 +5,10 @@ namespace App\Http\Middleware;
 use App\Enums\MembershipStatus;
 use App\Exceptions\DomainException;
 use App\Models\Company;
+use App\Models\User;
 use App\Support\Tenancy\TenantContext;
 use Closure;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,6 +29,9 @@ class ResolveTenant
         $user = $request->user();
         if (! $user) {
             return $next($request);
+        }
+        if (! $user instanceof User) {
+            throw new AuthenticationException; // machine tokens never get a user workspace
         }
 
         $memberships = $user->companies()

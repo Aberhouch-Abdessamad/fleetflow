@@ -3,6 +3,8 @@
 use App\Exceptions\ApiExceptionRenderer;
 use App\Http\Middleware\EnsureSuperAdmin;
 use App\Http\Middleware\EnsureUserIsActive;
+use App\Http\Middleware\EnsureUserToken;
+use App\Http\Middleware\ResolveIntegrationClient;
 use App\Http\Middleware\ResolveTenant;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
@@ -22,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withBroadcasting(__DIR__.'/../routes/channels.php', ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum']])
     ->withMiddleware(function (Middleware $middleware): void {
         // Sanctum SPA auth: SANCTUM_STATEFUL_DOMAINS get cookie sessions + CSRF,
         // everything else (driver app, integrations) uses bearer tokens.
@@ -32,6 +35,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'active' => EnsureUserIsActive::class,
             'tenant' => ResolveTenant::class,
             'super_admin' => EnsureSuperAdmin::class,
+            'user' => EnsureUserToken::class,
+            'integration' => ResolveIntegrationClient::class,
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
         ]);
@@ -41,6 +46,7 @@ return Application::configure(basePath: dirname(__DIR__))
             StartSession::class,
             Authenticate::class,
             ResolveTenant::class,
+            ResolveIntegrationClient::class,
             PermissionMiddleware::class,
             RoleMiddleware::class,
             SubstituteBindings::class,

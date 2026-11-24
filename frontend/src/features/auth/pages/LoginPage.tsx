@@ -20,14 +20,14 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const [formError, setFormError] = useState<string | null>(null)
-  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<Values>({ resolver: zodResolver(schema) })
+  const { register, handleSubmit, setError, setValue, formState: { errors, isSubmitting } } = useForm<Values>({ resolver: zodResolver(schema) })
 
   const onSubmit = handleSubmit(async (values) => {
     setFormError(null)
     try {
       const user = await login(values)
       const from = (location.state as { from?: string } | null)?.from
-      navigate(user?.current_company ? (from ?? '/app') : '/onboarding', { replace: true })
+      navigate(from ?? (user?.is_super_admin && !user.current_company ? '/admin' : !user?.current_company ? '/onboarding' : user.roles.length === 1 && user.roles[0] === 'driver' ? '/driver' : '/app'), { replace: true })
     } catch (e) {
       const err = applyServerErrors(e, setError, ['email', 'password'])
       if (err.kind !== 'validation') setFormError(err.message)
@@ -36,16 +36,16 @@ export default function LoginPage() {
 
   return (
     <div>
-      <h1 className="text-[1.75rem] font-extrabold">Welcome back</h1>
-      <p className="mt-1.5 text-sm text-muted">Sign in to your FleetFlow workspace.</p>
+      <h1 className="text-2xl font-semibold tracking-[-0.025em]">Welcome back</h1>
+      <p className="mt-1 text-[0.8125rem] text-muted">Sign in to your FleetFlow workspace.</p>
 
       {formError && <Alert tone="danger" className="mt-6">{formError}</Alert>}
 
-      <form onSubmit={onSubmit} className="mt-8 space-y-5" noValidate>
+      <form onSubmit={onSubmit} className="mt-7 space-y-4" noValidate>
         <Field label="Email" error={errors.email?.message}>
           <Input type="email" autoComplete="email" placeholder="you@company.com" leading={<Mail />} {...register('email')} />
         </Field>
-        <Field label="Password" error={errors.password?.message} labelAside={<span className="text-xs text-subtle">Reset arrives in Phase 3</span>}>
+        <Field label="Password" error={errors.password?.message} labelAside={<Link to="/forgot-password" className="text-xs font-medium text-fg underline decoration-border-strong underline-offset-4 hover:decoration-fg">Forgot password?</Link>}>
           <PasswordInput autoComplete="current-password" placeholder="••••••••" {...register('password')} />
         </Field>
         <Button type="submit" size="lg" className="w-full" loading={isSubmitting}>
@@ -53,15 +53,22 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-muted">
+      <p className="mt-6 text-center text-[0.8125rem] text-muted">
         New to FleetFlow?{' '}
-        <Link to="/register" className="font-semibold text-primary hover:underline">Create an account</Link>
+        <Link to="/register" className="font-medium text-fg underline decoration-border-strong underline-offset-4 hover:decoration-fg">Create an account</Link>
       </p>
 
       {import.meta.env.DEV && (
-        <div className="mt-8 rounded-xl border border-dashed border-border-strong bg-surface-2 p-3.5 text-xs text-muted">
-          <p className="font-semibold text-fg-soft">Development accounts (seeded)</p>
-          <p className="mt-1"><code>owner@fleetflow.test</code> · <code>admin@fleetflow.test</code> — password <code>password</code></p>
+        <div className="mt-8 rounded-lg border border-dashed border-border-strong p-3 text-xs">
+          <p className="flex items-center justify-between text-muted"><span className="font-medium text-fg-soft">Seeded dev accounts</span><span>click to fill · password <code className="font-mono">password</code></span></p>
+          <div className="mt-2 grid grid-cols-2 gap-1">
+            {[['owner', 'Company admin'], ['dispatch', 'Dispatcher'], ['fleet', 'Fleet manager'], ['finance', 'Accountant'], ['driver', 'Driver app'], ['admin', 'Super admin']].map(([u, r]) => (
+              <button key={u} type="button" onClick={() => { setValue('email', `${u}@fleetflow.test`); setValue('password', 'password') }}
+                className="rounded-md px-2 py-1 text-left transition-colors hover:bg-surface-3">
+                <span className="block font-mono text-[11px] text-fg-soft">{u}@</span><span className="text-subtle">{r}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

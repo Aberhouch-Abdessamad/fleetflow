@@ -57,7 +57,7 @@ export default function SystemStatusPage() {
           <Link to="/"><Logo /></Link>
           <ThemeToggle />
         </div>
-        <h1 className="text-2xl font-extrabold">System status</h1>
+        <h1 className="text-xl font-semibold">System status</h1>
         <p className="mt-1 text-sm text-muted">Verifies the SPA ↔ API ↔ database connection and the Sanctum handshake.</p>
         <Card className="mt-6 divide-y divide-border">
           {checks.map((c) => (

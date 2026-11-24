@@ -23,7 +23,7 @@ export function Field({ label, error, hint, required, className, labelAside, chi
   return (
     <div className={cn('space-y-1.5', className)}>
       <div className="flex items-baseline justify-between gap-2">
-        <label htmlFor={id} className="text-[0.8125rem] font-semibold text-fg-soft">
+        <label htmlFor={id} className="text-[0.8125rem] font-medium text-fg">
           {label}
           {required && <span className="ml-0.5 text-danger">*</span>}
         </label>
